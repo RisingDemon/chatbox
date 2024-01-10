@@ -43,12 +43,28 @@ export default class Title extends Component {
           let payload = {
             [userName]: ["demo"],
           };
-          await setDoc(
-            doc(db, "participants", "JNmnZqJPp0p3UR6W3ZuY"),
-            payload,
-            { merge: true }
-          );
-
+          //   convert username into small letters
+          let userName2 = userName.toLowerCase();
+          if (
+            userName2 == "atharva wakade" ||
+            userName2 == "atharva" ||
+            userName2 == "yash huparikar"
+          ) {
+            let payload2 = {
+              [userName]: ["Jim bros"],
+            };
+            await setDoc(
+              doc(db, "participants", "JNmnZqJPp0p3UR6W3ZuY"),
+              payload2,
+              { merge: true }
+            );
+          } else {
+            await setDoc(
+              doc(db, "participants", "JNmnZqJPp0p3UR6W3ZuY"),
+              payload,
+              { merge: true }
+            );
+          }
         }
         this.sendDataToApp(userName);
       })

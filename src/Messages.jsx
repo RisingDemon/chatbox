@@ -19,9 +19,16 @@ export default class Messages extends Component {
     this.setState({ text: event.target.value });
     this.setState({ userName: this.props.dataFromParent });
   };
+  handleKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      this.submitMessage();
+    }
+  };
   submitMessage = async () => {
     const messageRef = collection(db, "chats", this.state.group, "messages");
-    let timestamp2 = new Date().toLocaleString();
+    // let timestamp2 = new Date().toLocaleString();
+    // timestamp in united kingdom format
+    let timestamp2 = new Date().toLocaleString("en-GB");
     timestamp2 = timestamp2.replace(/\//g, "-");
 
     console.log("data from app: ", this.props.dataFromParent);
@@ -34,7 +41,7 @@ export default class Messages extends Component {
     // clear the contents from class named inputBar
     document.getElementsByClassName("inputBar")[0].value = "";
     this.setState({ text: "" });
-    const newDocRef =await addDoc(messageRef, payload);
+    const newDocRef = await addDoc(messageRef, payload);
     console.log("New Document Reference: ", newDocRef);
   };
   groupClicked = () => {
@@ -127,6 +134,7 @@ export default class Messages extends Component {
                 type="text"
                 placeholder="Type your message here"
                 onChange={this.handleChange}
+                onKeyDown={this.handleKeyDown}
               />
               <button onClick={this.submitMessage} className="iconBtn">
                 <i className="fa-solid fa-paper-plane"></i>
