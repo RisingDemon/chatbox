@@ -58,7 +58,18 @@ export default class Title extends Component {
               payload2,
               { merge: true }
             );
-          } else {
+          }
+          else if(userName2==="shruti patil" || userName2=="shrutika patil"){
+            let payload2 = {
+                [userName]: ["Vois bros"],
+              };
+              await setDoc(
+                doc(db, "participants", "JNmnZqJPp0p3UR6W3ZuY"),
+                payload2,
+                { merge: true }
+              );
+          }
+          else {
             await setDoc(
               doc(db, "participants", "JNmnZqJPp0p3UR6W3ZuY"),
               payload,
