@@ -1,0 +1,57 @@
+.leftSide{
+    position: fixed;
+    top: 72px;
+    width: 25%;
+    float: left;
+    /* margin-left: 5px; */
+    margin-top: 4px;
+    background-color: #E9E9E9;
+    height: 100%;
+    box-shadow: 6px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+}
+.groupBackground {
+    background-color: #4B4B4B;
+    width: 100%;
+    height: 63px;
+    display: flex;
+    box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.25);
+}
+.groups {
+    align-items: center;
+    display: inline-flex;
+    color: white;
+    font-size: 25px;
+    height: auto;
+    margin: auto;
+}
+.grpBtn{
+    border: none;
+    background: none;
+    padding: 0px;
+    height: 70px;
+    display: flex;
+    width: 90%;
+    margin-left: 10px;
+    margin-top: 18px;
+
+}
+
+.groupCard{
+    height: -webkit-fill-available;
+    width: -webkit-fill-available;
+    background-color: white;
+    border-radius: 20px;
+    border: 2px solid #363636;
+    box-shadow: 0px 4px 2px 0px rgba(0, 0, 0, 0.25), 0px 4px 5px 0px rgba(0, 0, 0, 0.25) inset;
+    align-items: center;
+    display: flex;
+}
+.groupName{
+    color: #8D0000;
+    /* font-family: Lato; */
+    font-size: 19px;
+    font-weight: 700;
+    align-items: center;
+    display: flex;
+    margin-left: 16px;
+}
