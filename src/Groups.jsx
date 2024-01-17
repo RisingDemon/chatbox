@@ -3,9 +3,11 @@ import "./Groups.css";
 import { db } from "./Config";
 import { collection, doc, getDocs, getDoc } from "firebase/firestore";
 
+
 export default class Groups extends Component {
   state = {
     userName: "",
+    bgColor: "",
     userGroups: [],
   };
 
@@ -25,11 +27,24 @@ export default class Groups extends Component {
     let groupArr = docSnap.data();
     console.log("groupArr: ", groupArr);
     let userGroups = groupArr[userName];
+    for(const key in groupArr){
+        userGroups.push(key);
+    }
     console.log("groupArr: ", groupArr[userName]);
     this.setState({ userGroups: userGroups });
   };
     grpClick=(index)=>{
         console.log("index: ",index);
+        // change background color of group card
+        // fetch button element with index
+        // change background color of button
+        // clear background color of other buttons
+        let btns=document.getElementsByClassName("grpBtn");
+        for(let i=0;i<btns.length;i++){
+            btns[i].style.backgroundColor="white";
+        }
+        document.getElementsByClassName("grpBtn")[index].style.backgroundColor="red";
+        // this.setState({bgColor: "red"});
 
         this.props.fetchGroupName(this.state.userGroups[index]);
     }
@@ -44,7 +59,7 @@ export default class Groups extends Component {
           {this.state.userGroups.map((group, index) => (
             <div key={index}>
               {group ? (
-                <button key={index} onClick={()=>this.grpClick(index)} className="grpBtn">
+                <button style={{backgroundColor: this.state.bgColor}} key={index} onClick={()=>this.grpClick(index)} className="grpBtn">
                 <div className="groupCard">
                   <p className="groupName">{group}</p>
                 </div>

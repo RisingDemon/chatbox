@@ -33,10 +33,12 @@
     margin: auto;
 }
 .messageCard{
-    width: max-content;
+    width: fit-content;
     height: max-content;
     background-color: #E9E9E9;
     border-radius: 15px;
+    word-break: break-word;
+    /* width: 80%; */
 }
 .userName{
     color: brown;

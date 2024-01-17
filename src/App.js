@@ -7,6 +7,8 @@ import Messages from "./Messages";
 
 import { useState } from "react";
 
+import { ScrollElement } from "react-scroll";
+
 function App() {
   // multiple states
   const [messageFromChild, setMessageFromChild] = useState("");
@@ -23,8 +25,14 @@ function App() {
       <Title takeData={getData} />
       {messageFromChild ? (
         <div>
-          <Groups dataFromParent={messageFromChild} fetchGroupName={clickedgrpName}  />
-          <Messages dataFromParent={messageFromChild} grpName={messageFromChild2} />
+          <Groups
+            dataFromParent={messageFromChild}
+            fetchGroupName={clickedgrpName}
+          />
+          <Messages
+            dataFromParent={messageFromChild}
+            grpName={messageFromChild2}
+          />
         </div>
       ) : (
         <p>Nothing to show</p>
