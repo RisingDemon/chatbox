@@ -22,7 +22,7 @@ import OpenAI from "openai";
 
 const openai = new OpenAI({
   //   apiKey: process.env.REACT_APP_OPENAI_API_KEY,
-  apiKey: "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",
+  apiKey: "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",
   dangerouslyAllowBrowser: true,
 });
 
@@ -121,11 +121,18 @@ export default class Messages extends Component {
     console.log("New Document Reference: ", newDocRef);
   };
   groupClicked = async () => {
+    let uName = this.state.userName;
+    let arg0, arg1, arg2;
+    arg0 = "chats";
+    arg2 = "messages";
+    this.setState({ arg0: "chats" });
+    this.setState({ arg2: "messages" });
     console.log("group clicked");
     console.log("userName: ", this.state.userName);
     let grpName = this.props.grpName;
     this.setState({ group: grpName });
     this.setState({ arg1: grpName });
+    arg1 = grpName;
     console.log("grpName: ", grpName);
 
     const groupRef = doc(db, "participants", "JNmnZqJPp0p3UR6W3ZuY");
@@ -151,9 +158,12 @@ export default class Messages extends Component {
         flag2 = false;
       }
     }
+    // group exists in participants collection
     if (flag2 === true) {
+        arg0 = "dm";
+        arg2 = uName;
       this.setState({ arg0: "dm" });
-      this.setState({ arg2: this.state.userName });
+      this.setState({ arg2: uName });
       console.log("group exists in participants collection");
 
       const querySnapshot = await getDocs(collection(db, "dm"));
@@ -164,52 +174,65 @@ export default class Messages extends Component {
       });
       let flag = false;
       console.log("namesArr: ", namesArr);
-      // iterate over namesArr and check if grpName is present
+      //   check if grpName is present in dm
       for (let i of namesArr) {
         if (i === grpName) {
           namesArr = [];
           console.log("group exists");
-          this.setState({ arg2: this.state.userName });
-          this.setState({ arg1: grpName });
+          console.log("arg1: ", grpName);
+          //   this.setState({ arg2: uName });
+          // this.setState({ arg2: uName }, () => {
+          //     console.log("arg2 in callback: ", this.state.arg2);
+          // });
+
+          //   this.setState({ arg1: grpName });
           // const groupRef = collection(db, "dm", grpName, this.state.userName);
           // const payload = {
           //   [grpName]: ["demo"],
           // };
           // const newDocRef = await addDoc(groupRef, payload);
           flag = true;
+          break;
         }
       }
       if (flag === false) {
+        arg1 = uName;
+        arg2 = grpName;
+        this.setState({ arg1: uName });
+        this.setState({ arg2: grpName });
         console.log("group does not exist");
         for (let i of namesArr) {
           console.log(this.state.userName);
           if (i === this.state.userName) {
-            this.setState({ arg1: this.state.userName });
-            this.setState({ arg2: grpName });
+            // this.setState({ arg1: this.state.userName });
+            // this.setState({ arg2: grpName });
             console.log("user exists");
             flag = true;
           }
         }
         if (flag === false) {
+            arg1 = grpName;
+            arg2 = uName;
+          this.setState({ arg1: grpName });
+          this.setState({ arg2: uName });
           let data = {};
           await setDoc(doc(db, "dm", grpName), data);
           // create a collection with user name
           console.log("group created");
-          this.setState({ arg1: grpName });
-          this.setState({ arg2: this.state.userName });
         }
 
         //   add group to chats collection
       }
-    } else {
-      this.setState({ arg0: "chats" });
-      this.setState({ arg2: "messages" });
     }
 
-    if (this.props.grpName !== "") {
+    if (this.props.grpName !== "" ) {
       console.log(this.state.arg0, this.state.arg1, this.state.arg2);
+      console.log(arg0, arg1, arg2);
+
       const unsub = onSnapshot(
-        collection(db, this.state.arg0, this.state.arg1, this.state.arg2),
+        // collection(db, this.state.arg0, this.state.arg1, this.state.arg2),
+        collection(db, arg0, arg1, arg2),
+
         (snapshot) => {
           snapshot.docChanges().forEach((change) => {
             if (change.type === "added") {
