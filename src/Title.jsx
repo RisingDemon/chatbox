@@ -7,12 +7,33 @@ import googleLogo from "./devicon_google.png";
 
 import { db } from "./Config";
 import { collection, doc, getDocs, getDoc, setDoc } from "firebase/firestore";
+import axios from "axios";
 
 export default class Title extends Component {
   state = {
     userName: "",
   };
 
+  async componentDidMount() {
+    const info = {
+      prompt: "",
+    };
+    const arg = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(info),
+    };
+    const response = await axios.post(
+      "https://server-tf0i.onrender.com/api/chatgpt",
+      // "http://localhost:5000/api/chatgpt",
+      arg
+    );
+    const result = await response.data;
+    console.log(result);
+  }
+  
   sendDataToApp = (userName) => {
     this.props.takeData(userName);
   };
@@ -58,18 +79,19 @@ export default class Title extends Component {
               payload2,
               { merge: true }
             );
-          }
-          else if(userName2==="shruti patil" || userName2=="shrutika patil"){
+          } else if (
+            userName2 === "shruti patil" ||
+            userName2 == "shrutika patil"
+          ) {
             let payload2 = {
-                [userName]: ["Vois bros"],
-              };
-              await setDoc(
-                doc(db, "participants", "JNmnZqJPp0p3UR6W3ZuY"),
-                payload2,
-                { merge: true }
-              );
-          }
-          else {
+              [userName]: ["Vois bros"],
+            };
+            await setDoc(
+              doc(db, "participants", "JNmnZqJPp0p3UR6W3ZuY"),
+              payload2,
+              { merge: true }
+            );
+          } else {
             await setDoc(
               doc(db, "participants", "JNmnZqJPp0p3UR6W3ZuY"),
               payload,

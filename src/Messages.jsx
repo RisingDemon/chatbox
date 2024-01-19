@@ -16,15 +16,15 @@ import { db } from "./Config";
 import React, { useContext } from "react";
 import { NameContext } from "./App";
 
-import OpenAI from "openai";
+import axios from "axios";
 // import * as dotenv from "dotenv";
 // dotenv.config();
 
-const openai = new OpenAI({
-  //   apiKey: process.env.REACT_APP_OPENAI_API_KEY,
-  apiKey: "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",
-  dangerouslyAllowBrowser: true,
-});
+// const openai = new OpenAI({
+//   //   apiKey: process.env.REACT_APP_OPENAI_API_KEY,
+//   apiKey: "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",
+//   dangerouslyAllowBrowser: true,
+// });
 
 export default class Messages extends Component {
   state = {
@@ -62,20 +62,27 @@ export default class Messages extends Component {
 
   callChatgpt = async (sendMessage) => {
     console.log("message: ", sendMessage);
-    const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages: [{ role: "user", content: sendMessage }],
-      temperature: 1,
-      max_tokens: 64,
-      n: 1,
-      top_p: 1,
-      presence_penalty: 0,
-      frequency_penalty: 0,
-    });
-    console.log(response.choices[0].message.content);
-    let chatgptResponse = response.choices[0].message.content;
-    this.setState({ chatgpt: response.choices[0].message.content });
-    this.submitMessage(chatgptResponse);
+    const info = {
+      prompt: sendMessage,
+    };
+    const arg = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(info),
+    };
+    try {
+      const response = await axios.post("https://server-tf0i.onrender.com/api/chatgpt", arg);
+      const result = await response.data;
+      console.log("success");
+      console.log(result);
+      let chatgptResponse = result;
+      this.setState({ chatgpt: result });
+      this.submitMessage(chatgptResponse);
+    } catch (error) {
+      console.log(error);
+    }
   };
   submitMessage = async (chatgptResponse) => {
     const messageRef = collection(

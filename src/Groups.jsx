@@ -3,7 +3,6 @@ import "./Groups.css";
 import { db } from "./Config";
 import { collection, doc, getDocs, getDoc } from "firebase/firestore";
 
-
 export default class Groups extends Component {
   state = {
     userName: "",
@@ -18,6 +17,23 @@ export default class Groups extends Component {
   componentDidMount() {
     this.fetchUserName();
     this.checkGroups(this.props.dataFromParent);
+    // const info = {
+    //   prompt: "",
+    // };
+    // const arg = {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(info),
+    // };
+    // const response = await axios.post(
+    //     "https://server-tf0i.onrender.com/api/chatgpt",
+    //     // "http://localhost:5000/api/chatgpt",
+    //     arg
+    //   );
+    //   const result = await response.data;
+    //   console.log(result);
   }
 
   checkGroups = async (userName) => {
@@ -27,27 +43,28 @@ export default class Groups extends Component {
     let groupArr = docSnap.data();
     console.log("groupArr: ", groupArr);
     let userGroups = groupArr[userName];
-    for(const key in groupArr){
-        userGroups.push(key);
+    for (const key in groupArr) {
+      userGroups.push(key);
     }
     console.log("groupArr: ", groupArr[userName]);
     this.setState({ userGroups: userGroups });
   };
-    grpClick=(index)=>{
-        console.log("index: ",index);
-        // change background color of group card
-        // fetch button element with index
-        // change background color of button
-        // clear background color of other buttons
-        let btns=document.getElementsByClassName("grpBtn");
-        for(let i=0;i<btns.length;i++){
-            btns[i].style.backgroundColor="white";
-        }
-        document.getElementsByClassName("grpBtn")[index].style.backgroundColor="red";
-        // this.setState({bgColor: "red"});
-
-        this.props.fetchGroupName(this.state.userGroups[index]);
+  grpClick = (index) => {
+    console.log("index: ", index);
+    // change background color of group card
+    // fetch button element with index
+    // change background color of button
+    // clear background color of other buttons
+    let btns = document.getElementsByClassName("grpBtn");
+    for (let i = 0; i < btns.length; i++) {
+      btns[i].style.backgroundColor = "white";
     }
+    document.getElementsByClassName("grpBtn")[index].style.backgroundColor =
+      "red";
+    // this.setState({bgColor: "red"});
+
+    this.props.fetchGroupName(this.state.userGroups[index]);
+  };
 
   render() {
     return (
@@ -59,10 +76,15 @@ export default class Groups extends Component {
           {this.state.userGroups.map((group, index) => (
             <div key={index}>
               {group ? (
-                <button style={{backgroundColor: this.state.bgColor}} key={index} onClick={()=>this.grpClick(index)} className="grpBtn">
-                <div className="groupCard">
-                  <p className="groupName">{group}</p>
-                </div>
+                <button
+                  style={{ backgroundColor: this.state.bgColor }}
+                  key={index}
+                  onClick={() => this.grpClick(index)}
+                  className="grpBtn"
+                >
+                  <div className="groupCard">
+                    <p className="groupName">{group}</p>
+                  </div>
                 </button>
               ) : (
                 <div></div>
